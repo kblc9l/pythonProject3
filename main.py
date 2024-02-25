@@ -32,10 +32,10 @@ class Example(QWidget):
 
     def draw_flag(self, qp):
         a = random.randint(10, 100)
-        # r = random.randint(0, 255)
-        # g = random.randint(0, 255)
-        # b = random.randint(0, 255)
-        qp.setBrush(QColor(255, 255, 0))
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        qp.setBrush(QColor(r, g, b))
         qp.drawEllipse(random.randint(0, 200), random.randint(0, 200), a, a)
 
 
