@@ -1,28 +1,41 @@
+
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
-from PyQt5 import uic
 import sqlite3
+from PyQt5 import uic
+
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem
 
 
-class Coffee(QMainWindow):
+class MyWidget(QMainWindow):
     def __init__(self):
-        super(Coffee, self).__init__()
-
+        super().__init__()
         uic.loadUi('design.ui', self)
-        self.open_table()
 
-    def open_table(self):
-        con = sqlite3.connect("coffee.sqlite")
-        cur = con.cursor()
-        data = cur.execute("SELECT * FROM coffe_info").fetchall()
-        self.tableWidget.setRowCount(len(data))
-        for i, row in enumerate(data):
-            for j, elem in enumerate(row):
-                self.tableWidget.setItem(i, j, QTableWidgetItem(str(elem)))
+        self.con = sqlite3.connect("coffee.sqlite")
+        self.titles = None
+
+        self.setup_table()
+
+    def setup_table(self):
+        cur = self.con.cursor()
+        result = None
+
+        result = cur.execute(
+            f"""SELECT coffee.name, coffee.roasting_lvl, coffee.beans, coffee.taste, coffee.price, coffee.volume 
+                        FROM coffee""").fetchall()
+
+        self.tableWidget.setRowCount(len(result))
+        self.tableWidget.setColumnCount(len(result[0]))
+        self.titles = ["Название", "Степень обжарки", "В зернах?", "Описание вкуса", "Стоимость пачки", "Объем пачки"]
+        self.tableWidget.setHorizontalHeaderLabels(self.titles)
+        for i, elem in enumerate(result):
+            for j, val in enumerate(elem):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Coffee()
+    ex = MyWidget()
     ex.show()
     sys.exit(app.exec())

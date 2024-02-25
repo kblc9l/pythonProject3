@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>981</width>
+    <width>800</width>
     <height>600</height>
    </rect>
   </property>
@@ -18,46 +18,11 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>1</y>
-      <width>981</width>
-      <height>541</height>
+      <y>30</y>
+      <width>801</width>
+      <height>521</height>
      </rect>
     </property>
-    <column>
-     <property name="text">
-      <string>ID</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Сорт</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Обжарка</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Молотый/в зернах</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Описание вкуса</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Цена</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Объем</string>
-     </property>
-    </column>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -65,7 +30,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>981</width>
+     <width>800</width>
      <height>26</height>
     </rect>
    </property>
