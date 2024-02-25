@@ -1,20 +1,20 @@
-import csv
 import sys
 import sqlite3
-from PyQt5 import uic, QtCore
-from random import randint
-from PyQt5.QtGui import QColor, QPixmap
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QPushButton, QListView, QWidget
+from PyQt5 import QtCore
+
+from PyQt5.QtWidgets import QApplication, QWidget
+from UI.main_ui import Ui_MainWindow
+from UI.addEditCoffeeFor_ui import Ui_Form
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem
 
 
-class MyWidget(QMainWindow):
+class MyWidget(Ui_MainWindow, QMainWindow):
     def __init__(self):
         super().__init__()
         self.info_form = None
-        uic.loadUi('design.ui', self)
+        self.setupUi(self)
 
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.titles = None
 
         self.setup_table()
@@ -40,13 +40,10 @@ class MyWidget(QMainWindow):
                 self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
 
     def add(self):
-        print('add')
         self.info_form = CoffeeInfo("add", self.setup_table)
         self.info_form.show()
 
     def update(self):
-        print('update')
-
         self.info_form = CoffeeInfo("upd", self.setup_table,
                                     [int(self.tableWidget.item(self.tableWidget.currentRow(), 0).text()),
                                      str(self.tableWidget.item(self.tableWidget.currentRow(), 1).text()),
@@ -55,18 +52,17 @@ class MyWidget(QMainWindow):
                                      str(self.tableWidget.item(self.tableWidget.currentRow(), 4).text()),
                                      str(self.tableWidget.item(self.tableWidget.currentRow(), 5).text()),
                                      str(self.tableWidget.item(self.tableWidget.currentRow(), 6).text())])
-
         self.info_form.show()
 
 
-class CoffeeInfo(QWidget):
+class CoffeeInfo(QWidget, Ui_Form):
     def __init__(self, type: str, update, update_data: list = None):
         super().__init__()
-        uic.loadUi('addEditCoffeeForm.ui', self)
+        self.setupUi(self)
 
         self.pushButton.clicked.connect(self.save)
 
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.type = type
         self.update = update
 
