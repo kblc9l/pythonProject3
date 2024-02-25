@@ -1,41 +1,46 @@
-
+import random
 import sys
-import sqlite3
-from PyQt5 import uic
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem
+from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton
 
 
-class MyWidget(QMainWindow):
+class Example(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi('design.ui', self)
+        self.initUI()
 
-        self.con = sqlite3.connect("coffee.sqlite")
-        self.titles = None
+    def initUI(self):
+        self.setGeometry(300, 300, 200, 200)
+        self.setWindowTitle('123')
+        self.btn = QPushButton('Draw', self)
+        self.btn.move(70, 150)
+        self.btn.resize(60, 40)
+        self.do_paint = False
+        self.btn.clicked.connect(self.paint)
 
-        self.setup_table()
+    def paintEvent(self, event):
+        if self.do_paint:
+            qp = QPainter()
+            qp.begin(self)
+            self.draw_flag(qp)
+            qp.end()
 
-    def setup_table(self):
-        cur = self.con.cursor()
-        result = None
+    def paint(self):
+        self.do_paint = True
+        self.repaint()
 
-        result = cur.execute(
-            f"""SELECT coffee.name, coffee.roasting_lvl, coffee.beans, coffee.taste, coffee.price, coffee.volume 
-                        FROM coffee""").fetchall()
-
-        self.tableWidget.setRowCount(len(result))
-        self.tableWidget.setColumnCount(len(result[0]))
-        self.titles = ["Название", "Степень обжарки", "В зернах?", "Описание вкуса", "Стоимость пачки", "Объем пачки"]
-        self.tableWidget.setHorizontalHeaderLabels(self.titles)
-        for i, elem in enumerate(result):
-            for j, val in enumerate(elem):
-                self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
+    def draw_flag(self, qp):
+        a = random.randint(10, 100)
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        qp.setBrush(QColor(r, g, b))
+        qp.drawEllipse(random.randint(0, 200), random.randint(0, 200), a, a)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = MyWidget()
+    ex = Example()
     ex.show()
     sys.exit(app.exec())
